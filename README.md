@@ -1,4 +1,4 @@
- # [dominikreisach.xyz](https://www.dominikreisach.xyz)
+# [dominikreisach.xyz](https://www.dominikreisach.xyz)
 
 ## License
 
@@ -8,4 +8,4 @@
 This project is licensed under a dual license:
 
 - The content (images, text, videos, etc.) is licensed under the All Rights Reserved License. See [LICENSE](LICENSE).
-- The code (HTML, JavaScript, CSS) is licensed under the MIT License. See [LICENSE-MIT](LICENSE-MIT).
+- The code (Nuxt, Vue, TypeScript, CSS) is licensed under the MIT License. See [LICENSE-MIT](LICENSE-MIT).

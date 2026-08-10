@@ -1,0 +1,19 @@
+title: Web-Based Material Database for Circular Design
+date: "2024-08"
+thumb: /imgs/0000-01_publications/2024_02_dr
+venue: Design Modelling Symposium, 2024
+authors:
+  - { name: Man Ki Ian Law }
+  - { name: Chia Chang Keng }
+  - { name: Beril Önalan, mark: super }
+  - { name: Dominik Reisach, me: true, mark: super }
+  - { name: Simon Griffioen, mark: super }
+  - { name: Arabelle de Saussure }
+  - { name: Benjamin Dillenburger }
+  - { name: Catherine de Wolf }
+links:
+  - {
+      label: "[Conference Paper]",
+      href: "https://doi.org/10.1007/978-3-031-68275-9_10",
+    }
+  - { label: "[BibTeX]", href: /bibtex/lawWebBasedMaterialDatabase2024.bib }

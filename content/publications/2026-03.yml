@@ -1,0 +1,18 @@
+title: "Computational Design Methods for Geometry-Driven Upcycling of Found Objects in Construction"
+date: "2026-03"
+highlight: true
+thumb: /imgs/0000-01_publications/2026_01_dr
+venue: Automation in Construction, 2026
+authors:
+  - { name: Qiming Sun, mark: first }
+  - { name: Dominik Reisach, me: true, mark: first }
+  - { name: Silke Langenberg }
+  - { name: Benjamin Dillenburger }
+links:
+  - {
+      label: "[Journal Paper]",
+      href: "https://doi.org/10.1016/j.autcon.2026.106803",
+    }
+  - { label: "[Preprint]", href: "https://dx.doi.org/10.2139/ssrn.4952086" }
+  - { label: "[BibTeX]", href: /bibtex/sunComputationalDesignMethods2026.bib }
+  - { label: "[Data]", href: "https://doi.org/10.3929/ethz-b-000688161" }

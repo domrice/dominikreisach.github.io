@@ -1,0 +1,22 @@
+title: A Design-to-Fabrication Workflow for Free-Form Timber Structures Using Offcuts
+date: "2023-07"
+thumb: /imgs/0000-01_publications/2023_01_dr
+venue: CAAD Futures, 2023
+authors:
+  - { name: Dominik Reisach, me: true }
+  - { name: Stephan Schütz }
+  - { name: Jan Willmann }
+  - { name: Sven Schneider }
+links:
+  - {
+      label: "[Conference Paper]",
+      href: "https://doi.org/10.1007/978-3-031-37189-9_24",
+    }
+  - {
+      label: "[BibTeX]",
+      href: /bibtex/reisachDesigntoFabricationWorkflowFreeForm2023.bib,
+    }
+  - {
+      label: "[GitHub]",
+      href: "https://github.com/dominikreisach/Spruce-Beetle",
+    }

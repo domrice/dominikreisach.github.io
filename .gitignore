@@ -1,0 +1,10 @@
+node_modules
+.nuxt
+.output
+.data
+dist
+.DS_Store
+*.log
+
+# ProRes masters live in masters/, outside public/ so they never ship
+*.mov

@@ -1,0 +1,15 @@
+title: "Digital Fabrication for Circular Timber Construction: A Case Study"
+date: "2024-04"
+thumb: /imgs/0000-01_publications/2024_01_dr
+venue: Circular Economy, 2024
+authors:
+  - { name: Dominik Reisach, me: true }
+  - { name: Stephan Schütz }
+  - { name: Jan Willmann }
+  - { name: Sven Schneider }
+links:
+  - { label: "[Journal Paper]", href: "https://doi.org/10.55845/VWGD7873" }
+  - {
+      label: "[BibTeX]",
+      href: /bibtex/reisachDigitalFabricationCircular2024.bib,
+    }
