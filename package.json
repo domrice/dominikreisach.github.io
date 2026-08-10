@@ -15,7 +15,7 @@
     "nuxt": "^3",
     "p5": "^1",
     "vue": "^3",
-    "vue-router": "^4"
+    "vue-router": "^5"
   },
   "devDependencies": {
     "better-sqlite3": "^12.11.1",
