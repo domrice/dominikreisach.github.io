@@ -22,8 +22,8 @@ export default defineContentConfig({
         title: z.string(),
         order: z.number(),
         thumb: z.string(), // grid card image
-        grad: z.number(), // palette index 0-3 (static class maps live in the .vue files)
-        category: z.enum(['architecture', 'design-build', 'code', 'photography']), // grid section; order within it comes from `order`
+        grad: z.number(), // palette index into utils/grads.ts (0-5)
+        category: z.enum(['computation', 'design', 'misc']), // grid section in pages/work/index.vue; order within it comes from `order`
         hero: z.union([z.string(), z.object({ src: z.string(), credit: z.string().optional() })]).optional(), // top image basename (avif+jpg)
         media: media.optional(), // gallery below the text
         type: z.string().optional(), // "Design–Build Project"
@@ -40,9 +40,8 @@ export default defineContentConfig({
       type: 'page',
       source: 'pitch/*.md',
       schema: z.object({
-        title: z.string(), // browser title only — page has no headline
         lang: z.enum(['en', 'de']).default('en'), // picks the fixed strings in utils/pitchText.ts
-        grad: z.number().default(0), // palette index 0-3
+        grad: z.number().default(0), // palette index into utils/grads.ts (0-5)
         intro: z.string(), // "about me" blurb, markdown
         projects: z.array(z.object({ title: z.string(), blurb: z.string(), media })),
         closing: z.object({ title: z.string(), text: z.string() }).optional(),

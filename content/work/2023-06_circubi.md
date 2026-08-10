@@ -81,7 +81,7 @@ credits:
   - role: Collaborations
     people:
       - name: baubüro in situ ag
-        url: https://www.insitu.ch/
+        url: https://insitu.ch
       - name: Wiederverwerkle GmbH
         url: https://www.wiederverwerkle.ch/
       - name: B3 Kolb AG
