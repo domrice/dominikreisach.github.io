@@ -1,5 +1,15 @@
 <template>
-  <video ref="el" :poster="poster" preload="none" loop muted playsinline>
+  <!-- all clips are 16:9 after SAR correction; fixes layout before metadata loads -->
+  <video
+    ref="el"
+    :poster="poster"
+    width="16"
+    height="9"
+    preload="none"
+    loop
+    muted
+    playsinline
+  >
     <source :src="src" type="video/webm" />
     <!-- Apple ships no software AV1 decoder, so Safari before M3/A17 Pro needs h264 -->
     <source :src="src.replace(/\.webm$/, '.mp4')" type="video/mp4" />
