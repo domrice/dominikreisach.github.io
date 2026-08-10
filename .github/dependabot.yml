@@ -15,3 +15,11 @@ updates:
       # one PR for routine bumps; majors still come through individually
       minor-and-patch:
         update-types: [minor, patch]
+    # majors blocked by a peer range upstream — reopen once the peer widens
+    ignore:
+      # @nuxt/content 3.x declares peerOptional better-sqlite3@^12.5.0
+      - dependency-name: better-sqlite3
+        versions: ['13.x']
+      # @nuxt/ui 4.x peer is typescript ^5.6.3 || ^6.0.0, so 6 is fine and 7 is not
+      - dependency-name: typescript
+        versions: ['7.x']
