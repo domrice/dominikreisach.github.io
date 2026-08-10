@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@nuxt/content": "^3",
-    "@nuxt/ui": "^3",
+    "@nuxt/ui": "^4",
     "nuxt": "^3",
     "p5": "^1",
     "vue": "^3",
