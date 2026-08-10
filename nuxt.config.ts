@@ -23,7 +23,8 @@ export default defineNuxtConfig({
           .map(r => (typeof r === 'string' ? r : r.route))
           .filter(r => !r.includes('.') && !r.startsWith('/pitch')) // pitch pages are unlisted
           .sort()
-          .map(r => `  <url><loc>${SITE}${r}</loc><lastmod>${today}</lastmod></url>`)
+          // GitHub Pages 301s /about -> /about/, so emit the form it actually serves
+          .map(r => `  <url><loc>${SITE}${r.endsWith('/') ? r : r + '/'}</loc><lastmod>${today}</lastmod></url>`)
         await writeFile(
           '.output/public/sitemap.xml',
           `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
