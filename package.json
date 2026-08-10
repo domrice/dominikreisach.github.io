@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "better-sqlite3": "^12.11.1",
-    "typescript": "^5"
+    "typescript": "^6"
   },
   "overrides": {
     "oxc-parser": "^0.144.0"
