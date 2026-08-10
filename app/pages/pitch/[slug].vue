@@ -141,9 +141,6 @@ if (!doc.value)
     fatal: true,
   });
 
-// each section walks one step further through the palette, as the old static page did
-const step = (i: number) => (doc.value!.grad + i) % grads.length;
-
 const t = computed(() => pitchText[doc.value!.lang]);
 
 useHead({
