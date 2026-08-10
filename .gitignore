@@ -8,3 +8,7 @@ dist
 
 # ProRes masters live in masters/, outside public/ so they never ship
 *.mov
+
+# local Claude Code instructions
+CLAUDE.md
+.claude/settings.local.json
