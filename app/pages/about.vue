@@ -62,8 +62,15 @@ const link = (i: number) => [linkClass, grads[i % 4]];
           <a :class="link(4)" href="https://dfab.ch/" target="_blank"
             >NCCR Digital Fabrication</a
           >
-          and an associated PhD Researcher at the
-          <a :class="link(5)" href="https://ai.ethz.ch/" target="_blank"
+          and an associated PhD Researcher at
+          <a
+            :class="link(5)"
+            href="https://designplusplus.ethz.ch/"
+            target="_blank"
+            >Design++</a
+          >
+          and the
+          <a :class="link(6)" href="https://ai.ethz.ch/" target="_blank"
             >ETH AI Center</a
           >.
         </div>
