@@ -4,7 +4,8 @@
       class="bg-gradient-to-r from-brand-blue via-brand-pink to-brand-yellow rounded-sm p-3 flex flex-col lg:flex-row items-center lg:justify-between"
     >
       <span class="pb-3 lg:pb-0"
-        >© 2026 Dominik Reisach. All Rights Reserved.</span
+        >© {{ new Date().getFullYear() }} Dominik Reisach. All Rights
+        Reserved.</span
       >
       <ul class="flex lg:flex-row space-x-6">
         <li v-for="s in socials" :key="s.href">

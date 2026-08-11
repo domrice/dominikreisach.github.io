@@ -1,0 +1,26 @@
+name: Update copyright year
+
+on:
+  schedule:
+    - cron: '5 0 1 1 *' # Jan 1, 00:05 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    # the resulting push to main triggers deploy.yml, which rebuilds the site
+    # with the new `new Date().getFullYear()` in the footer — no second cron needed.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # ponytail: sed over two known files instead of a repo-wide scan.
+      # Ceiling: silently misses any new file with a hardcoded year — add paths here.
+      - run: sed -i "s/Copyright (c) [0-9]\{4\}/Copyright (c) $(date -u +%Y)/" LICENSE LICENSE-MIT
+      - run: |
+          git diff --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore: update copyright year to $(date -u +%Y)"
+          git push

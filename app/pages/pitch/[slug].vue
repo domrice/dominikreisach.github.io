@@ -113,7 +113,7 @@
           >
         </div>
         <div class="pt-20 text-sm text-gray-400">
-          © 2026 Dominik Reisach. {{ t.rights }}
+          © {{ new Date().getFullYear() }} Dominik Reisach. {{ t.rights }}
         </div>
       </section>
     </main>
