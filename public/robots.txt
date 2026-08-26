@@ -1,0 +1,21 @@
+# search engines: index everything
+User-agent: *
+Allow: /
+
+# AI training crawlers: opt out. voluntary — no technical enforcement.
+# Google-Extended / Applebot-Extended only gate Gemini/Apple Intelligence training,
+# they do not affect Google Search or Siri results.
+# on-demand fetchers (OAI-SearchBot, ChatGPT-User, PerplexityBot) stay allowed
+# so the site can still be cited in AI search answers.
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bytespider
+User-agent: meta-externalagent
+User-agent: Amazonbot
+Disallow: /
+
+Sitemap: https://dominikreisach.xyz/sitemap.xml
