@@ -11,25 +11,34 @@
             v-for="item in g.items"
             :key="item.path"
             :to="item.path"
-            class="group cursor-pointer border border-solid border-black aspect-square overflow-hidden"
+            class="group relative block border border-solid border-black aspect-square overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white"
           >
-            <div class="relative overflow-hidden aspect-square">
-              <img
-                :src="item.thumb"
-                :alt="item.title"
-                width="800"
-                height="800"
-                loading="lazy"
-                decoding="async"
-                class="object-cover w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-110"
-              />
-              <div
-                class="absolute inset-0 transition-all ease-in-out group-hover:bg-gradient-to-b lg:group-hover:bg-gradient-to-r opacity-75 aspect-square flex justify-center items-center text-transparent hover:text-white text-center text-2xl"
-                :class="grads[item.grad]"
-              >
-                {{ item.title }}
-              </div>
-            </div>
+            <img
+              :src="item.thumb"
+              alt=""
+              width="800"
+              height="800"
+              loading="lazy"
+              decoding="async"
+              class="absolute inset-0 object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
+            />
+            <!-- the project's chromatic key, as the pointer reward. Sits beneath the scrim so
+                 centred white type clears the amber stops. opacity is what fades —
+                 background-image cannot be transitioned, so the old transition-all never ran. -->
+            <div
+              aria-hidden="true"
+              class="absolute inset-0 opacity-0 transition-opacity duration-500 ease-out bg-linear-to-b lg:bg-linear-to-r group-hover:opacity-75 group-focus-visible:opacity-75 group-active:opacity-75 motion-reduce:transition-none"
+              :class="grads[item.grad]"
+            />
+            <!-- the tile names itself, centred. hidden until hover on pointer devices; always
+                 visible on touch, where no hover exists — same mechanism as MediaFigure's
+                 credits. The radial scrim backs the type without veiling the thumbnail's edges,
+                 and is what keeps white legible over the amber gradients. -->
+            <span
+              class="absolute inset-0 flex items-center justify-center p-4 text-center text-2xl text-white bg-radial from-black/50 via-black/25 to-transparent transition-opacity duration-500 ease-out [@media(hover:hover)]:opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+            >
+              {{ item.title }}
+            </span>
           </NuxtLink>
         </div>
       </section>
