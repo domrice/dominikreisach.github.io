@@ -1,18 +1,24 @@
 ---
 title: Untangled | Entangled
+description: >-
+  Untangled | Entangled is a participatory public installation exploring the hidden connections between global supply chains, environmental impact, and local communities.
 order: 7
 category: design
 grad: 2
-thumb: /imgs/2024-05_untangled_entangled/ue0_dr_thumb.avif
+thumb: /imgs/2024-05_untangled_entangled/ue0_dr_thumb
 hero:
   src: /imgs/2024-05_untangled_entangled/ue2_dr
+  alt: Rendering of stacked sleeper shelves forming a street-side structure with people
   credit: © Hector Gruntdal Grønborg, Lavinia Krick, Dominik Reisach, Lia Zinngrebe
 media:
   - src: /imgs/2024-05_untangled_entangled/ue1_dr
+    alt: Timeline diagram of the participatory design and construction process
     credit: Participatory Construction Process © Hector Gruntdal Grønborg, Lavinia Krick, Dominik Reisach, Lia Zinngrebe
   - src: /imgs/2024-05_untangled_entangled/ue3_dr
+    alt: Axonometric drawing of the installation with people using its shelves
     credit: © Hector Gruntdal Grønborg, Lavinia Krick, Dominik Reisach, Lia Zinngrebe
   - src: /imgs/2024-05_untangled_entangled/ue4_dr
+    alt: Rows of stacked concrete railroad sleepers in a snowy yard
     credit: Available Material for Reuse | Photo © TAB2024
     portrait: true
 type: Installation Competition

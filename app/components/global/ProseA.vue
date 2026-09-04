@@ -1,8 +1,10 @@
-<!-- overrides mdc's ProseA: absolute URLs in markdown open in a new tab -->
+<!-- overrides mdc's ProseA: absolute URLs in markdown open in a new tab, on the
+     same `external` terms as every hand-written outbound link -->
 <template>
   <NuxtLink
     :href="href"
-    :target="target ?? (href.startsWith('http') ? '_blank' : undefined)"
+    :target="blank"
+    :rel="blank === external.target ? external.rel : undefined"
   >
     <slot />
   </NuxtLink>
@@ -13,4 +15,6 @@ const { href = "", target } = defineProps<{
   href?: string;
   target?: string;
 }>();
+
+const blank = target ?? (href.startsWith("http") ? external.target : undefined);
 </script>

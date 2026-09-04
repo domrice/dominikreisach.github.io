@@ -8,6 +8,7 @@ authors:
   - { name: Dominik Reisach, me: true, mark: super }
   - { name: Ming-Yang Wang, mark: super }
   - { name: Benjamin Dillenburger }
-links:
-  # - { label: "[Conference Paper]", href: "https://doi.org/" }
-  # - { label: "[BibTeX]", href: /bibtex/ }
+status: in press
+# links:
+#   - { label: "conference paper", href: "https://doi.org/" }
+#   - { label: "bibtex", href: /bibtex/ }

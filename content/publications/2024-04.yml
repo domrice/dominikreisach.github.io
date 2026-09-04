@@ -8,8 +8,8 @@ authors:
   - { name: Jan Willmann }
   - { name: Sven Schneider }
 links:
-  - { label: "[Journal Paper]", href: "https://doi.org/10.55845/VWGD7873" }
+  - { label: "journal paper", href: "https://doi.org/10.55845/VWGD7873" }
   - {
-      label: "[BibTeX]",
+      label: "bibtex",
       href: /bibtex/reisachDigitalFabricationCircular2024.bib,
     }

@@ -2,14 +2,23 @@
   <div class="fixed top-6 lg:top-12 right-6 lg:right-12 z-10">
     <NuxtLink
       :to="to"
-      class="block cursor-pointer hover:bg-gradient-to-l hover:bg-clip-text hover:text-transparent duration-300 text-4xl lg:text-6xl"
-      :class="grad"
-      aria-label="Close"
-      >&empty;</NuxtLink
+      :class="`group flex min-h-11 min-w-11 cursor-pointer items-start justify-end text-4xl lg:text-6xl ${focusRing}`"
+      :aria-label="label"
     >
+      <!-- the glyph is narrower than the 44px target, so the gradient clip lives on
+           the span: it must size to the glyph, not to the hit area -->
+      <span :class="[clipGrad.group.l, grad]">&empty;</span>
+    </NuxtLink>
   </div>
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{ grad: string; to?: string }>(), { to: '/' })
+const props = withDefaults(defineProps<{ grad: string; to?: string }>(), {
+  to: "/",
+});
+
+// one glyph doing two jobs; the label has to name the destination the glyph can't
+const label = computed(() =>
+  props.to === "/work" ? "back to selected work" : "back to home",
+);
 </script>

@@ -9,14 +9,14 @@ authors:
   - { name: Sven Schneider }
 links:
   - {
-      label: "[Conference Paper]",
+      label: "conference paper",
       href: "https://doi.org/10.1007/978-3-031-37189-9_24",
     }
   - {
-      label: "[BibTeX]",
+      label: "bibtex",
       href: /bibtex/reisachDesigntoFabricationWorkflowFreeForm2023.bib,
     }
   - {
-      label: "[GitHub]",
+      label: "github",
       href: "https://github.com/dominikreisach/Spruce-Beetle",
     }

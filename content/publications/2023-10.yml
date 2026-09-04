@@ -6,7 +6,7 @@ authors:
   - { name: Dominik Reisach, me: true }
 links:
   - {
-      label: "[Conference Paper]",
+      label: "conference paper",
       href: "https://doi.org/10.3929/ethz-b-000643632",
     }
-  - { label: "[BibTeX]", href: /bibtex/reisachOffcutTalesDocumenting2023.bib }
+  - { label: "bibtex", href: /bibtex/reisachOffcutTalesDocumenting2023.bib }

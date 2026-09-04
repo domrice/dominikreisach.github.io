@@ -1,24 +1,33 @@
 ---
 title: CircÛbi
+description: >-
+  In summer 2022, three temporary wooden buildings — the Huber Pavilions — had to make way for a new building on the ETH Hönggerberg campus.
 order: 4
 category: design
 grad: 3
-thumb: /imgs/2023-06_circubi/hr0_dr_thumb.avif
+thumb: /imgs/2023-06_circubi/hr0_dr_thumb
 hero:
   src: /imgs/2023-06_circubi/hr1_dr
+  alt: Aerial view of the triangular pavilion with people gathered inside, arc award logo
   credit: Photo © Elias Knecht
 media:
   - src: /imgs/2023-06_circubi/hr2_dr
+    alt: Group photo of the student team on the finished white timber pavilion
     credit: Photo © Elias Knecht
   - src: /imgs/2023-06_circubi/hr3_dr
+    alt: Aerial view of the construction site with stored components and tents
     credit: Photo © Elias Knecht
   - src: /imgs/2023-06_circubi/hr4_dr
+    alt: Crane lifting a large truss frame of the pavilion into place
     credit: Photo © Elias Knecht
   - src: /imgs/2023-06_circubi/hr5_dr
+    alt: Top-down view of the pavilion frame being assembled by crane
     credit: Photo © Elias Knecht
   - src: /imgs/2023-06_circubi/hr6_dr
+    alt: Crane and construction site beside the campus building
     credit: Photo © Elias Knecht
   - src: /imgs/2023-06_circubi/hr7_dr
+    alt: The finished pavilion in the meadow between campus buildings
     credit: Photo © Dominik Reisach
 type: Design–Build Project
 year: 2023

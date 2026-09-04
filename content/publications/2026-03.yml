@@ -10,9 +10,9 @@ authors:
   - { name: Benjamin Dillenburger }
 links:
   - {
-      label: "[Journal Paper]",
+      label: "journal paper",
       href: "https://doi.org/10.1016/j.autcon.2026.106803",
     }
-  - { label: "[Preprint]", href: "https://dx.doi.org/10.2139/ssrn.4952086" }
-  - { label: "[BibTeX]", href: /bibtex/sunComputationalDesignMethods2026.bib }
-  - { label: "[Data]", href: "https://doi.org/10.3929/ethz-b-000688161" }
+  - { label: "preprint", href: "https://dx.doi.org/10.2139/ssrn.4952086" }
+  - { label: "bibtex", href: /bibtex/sunComputationalDesignMethods2026.bib }
+  - { label: "data", href: "https://doi.org/10.3929/ethz-b-000688161" }

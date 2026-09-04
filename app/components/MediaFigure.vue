@@ -7,30 +7,37 @@
   >
     <!-- named MediaVideo, not LazyVideo — Nuxt reserves the `Lazy` prefix for lazy hydration -->
     <MediaVideo
-      v-if="src.endsWith('.webm')"
+      v-if="isVideo(src)"
       :src="src"
+      :alt="alt"
       class="rounded-md w-full h-full object-cover"
     />
     <picture v-else class="contents">
       <source :srcset="`${src}.avif`" type="image/avif" />
       <img
         :src="`${src}.jpg`"
-        alt=""
+        :alt="alt || ''"
+        v-bind="sizeAttrs(src)"
         class="rounded-md w-full h-full object-cover"
         loading="lazy"
         decoding="async"
       />
     </picture>
-    <!-- hover-only on pointer devices; touch has no hover, so it stays visible there -->
-    <figcaption
-      v-if="credit"
-      class="absolute inset-x-0 bottom-0 p-4 text-center uppercase tracking-widest text-xs text-white bg-linear-to-t from-black/85 via-black/45 to-transparent rounded-b-md transition-opacity duration-300 [@media(hover:hover)]:opacity-0 group-hover:opacity-100"
-    >
+    <!-- hover-only on pointer devices; touch has no hover, so it stays visible
+         there — which is why a video's credit clings to the top edge instead -->
+    <figcaption v-if="credit" :class="captionClass(src)">
       {{ credit }}
     </figcaption>
   </figure>
 </template>
 
 <script setup lang="ts">
-defineProps<{ src: string; portrait?: boolean; credit?: string }>();
+// alt is authored per item in frontmatter, and the two collections earn their
+// defaults differently. On `work` a `credit` is attribution ("Photo © …"), which
+// describes nothing — so all 106 items carry a real `alt`. On `pitch` the same
+// field is used as a German descriptive caption, and a `<figcaption>` inside the
+// `<figure>` is already announced with the image; alt there would say it twice, so
+// absent alt is correct. The exception is a pitch item whose caption is *only*
+// attribution — those carry an `alt` of their own.
+defineProps<{ src: string; portrait?: boolean; credit?: string; alt?: string }>();
 </script>

@@ -1,36 +1,52 @@
 ---
 title: Offcut Tales
+description: >-
+  This thesis presents methods for upcycling and designing low-engineered free-form timber structure with offcuts—a waste material from timber production.
 order: 3
 category: computation
 grad: 2
-thumb: /imgs/2022-09_offcut_tales/ot0_dr_thumb.avif
+thumb: /imgs/2022-09_offcut_tales/ot0_dr_thumb
 hero:
   src: /imgs/2022-09_offcut_tales/ot1_dr
   credit: Photo © Michael Braun
+  alt: Detailed photograph of a
 media:
   - src: /imgs/2022-09_offcut_tales/ot2i_dr
+    alt: Diagram of the lifecycle of a tree in the timber industry.
     credit: Life Cycle of a Tree © Dominik Reisach
   - src: /imgs/2022-09_offcut_tales/ot3_dr
+    alt: Diagram of the design-to-fabrication workflow for free-form timber structures.
     credit: Computational Upcycling Workflow © Dominik Reisach
   - src: /imgs/2022-09_offcut_tales/ot4i_dr
+    alt: Drawings of the free-form arched demonstrator.
     credit: Demonstrator Design © Dominik Reisach
   - src: /imgs/2022-09_offcut_tales/ot13_dr.webm
+    alt: >-
+      Screen recording of the custom Grasshopper plugin: a Rhino viewport showing the
+      free-form arched demonstrator geometry beside a Grasshopper canvas with custom components.
     credit: Custom Grasshopper Plugin | Video © Dominik Reisach
   - src: /imgs/2022-09_offcut_tales/ot6_dr.webm
+    alt: The UR10e robot arm milling a slot into the end face of a timber offcut clamped upright in a vice, in the daylit workshop.
     credit: Video © Dominik Reisach
     portrait: true
   - src: /imgs/2022-09_offcut_tales/ot7_dr.webm
+    alt: Close-up of the milling bit cutting a rectangular slot into the sawn end grain of an offcut, sawdust scattered across the face.
     credit: Video © Dominik Reisach
     portrait: true
   - src: /imgs/2022-09_offcut_tales/ot8_dr.webm
+    alt: The UR10e mounted on a mobile pedestal in the workshop, flanked by tables of stacked timber offcuts.
     credit: Video © Michael Braun
   - src: /imgs/2022-09_offcut_tales/ot9_dr
+    alt: Detailed photograph of the free-form arched demonstrator.
     credit: Photo © Michael Braun
   - src: /imgs/2022-09_offcut_tales/ot10_dr
+    alt: Detailed photograph of the free-form arched demonstrator.
     credit: Photo © Michael Braun
   - src: /imgs/2022-09_offcut_tales/ot11_dr
+    alt: Photograph of the free-form arched demonstrator.
     credit: Photo © Michael Braun
   - src: /imgs/2022-09_offcut_tales/ot12_dr
+    alt: Photograph of the free-form arched demonstrator.
     credit: Photo © Michael Braun
 type: Master's Thesis
 year: 2022

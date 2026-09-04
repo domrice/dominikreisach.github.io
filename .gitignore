@@ -11,4 +11,11 @@ dist
 
 # local Claude Code instructions
 CLAUDE.md
-.claude/settings.local.json
+.claude/
+.impeccable
+DESIGN.md
+PRODUCT.md
+# PLAN.md
+.github/agents
+.github/hooks
+.github/skills

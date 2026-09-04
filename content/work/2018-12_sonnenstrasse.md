@@ -1,22 +1,30 @@
 ---
 title: Sonnenstrasse
+description: >-
+  The defining architectural features of this design are transparency, structural clarity, a place of prominence within the urban context and a symbiotic relationship between the office units and the exterior space.
 order: 5
 category: design
 grad: 0
-thumb: /imgs/2018-12_sonnenstrasse/st0_dr_thumb.avif
+thumb: /imgs/2018-12_sonnenstrasse/st0_dr_thumb
 hero:
   src: /imgs/2018-12_sonnenstrasse/st0_dr
+  alt: Rendering of the curved, brass-toned courtyard façade seen from a balkony
   credit: © Allmann Wappner Architekten
 media:
   - src: /imgs/2018-12_sonnenstrasse/st2_dr
+    alt: Axonometric drawing of the C-shaped building in its urban block
     credit: © Allmann Wappner Architekten
   - src: /imgs/2018-12_sonnenstrasse/st3_dr
+    alt: Floor plan with the oval courtyard at its centre
     credit: © Allmann Wappner Architekten
   - src: /imgs/2018-12_sonnenstrasse/st4_dr
+    alt: Street elevation and section of the building between its neighbours
     credit: © Allmann Wappner Architekten
   - src: /imgs/2018-12_sonnenstrasse/st5_dr
+    alt: Exploded axonometric of façade layers, slabs and structure
     credit: © Allmann Wappner Architekten
   - src: /imgs/2018-12_sonnenstrasse/st6_dr
+    alt: Rendering of the street façade with columns and glass folding doors
     credit: © Allmann Wappner Architekten
 type: Competition
 year: 2019

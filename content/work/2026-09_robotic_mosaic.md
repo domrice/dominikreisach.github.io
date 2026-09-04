@@ -1,26 +1,36 @@
 ---
 title: Robotic Mosaic
+description: >-
+  Robotic Mosaic explores a material-led workflow for transforming irregular ceramic waste into bespoke mosaic surfaces.
 order: 1
 category: computation
 grad: 0
-thumb: /imgs/2026-09_robotic_mosaic/rm0_dr_thumb.avif
+thumb: /imgs/2026-09_robotic_mosaic/rm0_dr_thumb
 hero:
   src: /imgs/2026-09_robotic_mosaic/rm9_dr
+  alt: Concrete façade panel with a swirling mosaic of coloured ceramic shards
   credit: Mosaic Façade Panel | Photo © Spyridon Pyrgiotis, Ioanna Tatouli
 media:
   - src: /imgs/2026-09_robotic_mosaic/rm1_dr.webm
+    alt: Video of a Graphical User Interface prototype for planar mosaic fabrication
     credit: Graphical User Interface Prototype for Planar Mosaic Fabrication | Video © Dominik Reisach
   - src: /imgs/2026-09_robotic_mosaic/rm2_dr.webm
+    alt: Video of the planar mosaic fabrication with a robot picking and placing ceramic tiles onto a wooden board
     credit: Planar Mosaic Fabrication | Video © Dominik Reisach
   - src: /imgs/2026-09_robotic_mosaic/rm8_dr.webm
+    alt: Video of the robot excavating and compacting the earth formwork
     credit: Earth Formwork Fabrication | Video © Spyridon Pyrgiotis, Ioanna Tatouli
   - src: /imgs/2026-09_robotic_mosaic/rm3_dr.webm
+    alt: Video of the robot picking and placing ceramic tiles into the earth formwork
     credit: Mosaic Fabrication in Earth Formwork | Video © Spyridon Pyrgiotis, Ioanna Tatouli
   - src: /imgs/2026-09_robotic_mosaic/rm4_dr.webm
+    alt: Video of the robot flipping a ceramic tile with a pneumatic gripper
     credit: Tile Flipping | Video © Spyridon Pyrgiotis, Ioanna Tatouli
   - src: /imgs/2026-09_robotic_mosaic/rm7_dr.webm
+    alt: Video of the casting and demolding process of the mosaic concrete panels
     credit: Casting & Demolding | Video © Spyridon Pyrgiotis, Ioanna Tatouli
   - src: /imgs/2026-09_robotic_mosaic/rm0_dr
+    alt: Two stacked mosaic concrete panels standing in the workshop
     credit: Mosaic Façade Panels | Photo © Spyridon Pyrgiotis, Ioanna Tatouli
     portrait: true
 type: Research Project

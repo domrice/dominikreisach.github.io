@@ -1,6 +1,7 @@
 ---
 grad: 4
 lang: de
+recipient: Basler & Hofmann
 intro: >-
   Architektur-Informatiker mit Schwerpunkt auf algorithmischer Geometrie, Computer Vision und Softwareentwicklung sowie einer Leidenschaft für die Entwicklung eleganter digitaler Lösungen und automatisierter Workflows.
 projects:
@@ -44,6 +45,7 @@ projects:
     media:
       - src: /imgs/2022-09_offcut_tales/ot11_dr
         credit: Foto © Michael Braun
+        alt: Aufnahme der freigeformten, gewölbten Prototypen-Struktur.
       - src: /imgs/2022-09_offcut_tales/ot2i_dr
         credit: Holzkreislauf
       - src: /imgs/2022-09_offcut_tales/ot4i_dr
@@ -58,10 +60,13 @@ projects:
         portrait: true
       - src: /imgs/2022-09_offcut_tales/ot9_dr
         credit: Foto © Michael Braun
+        alt: Detailaufnahme der freigeformten, gewölbten Prototypen-Struktur.
       - src: /imgs/2022-09_offcut_tales/ot10_dr
         credit: Foto © Michael Braun
+        alt: Detailaufnahme der freigeformten, gewölbten Prototypen-Struktur.
       - src: /imgs/2022-09_offcut_tales/ot12_dr
         credit: Foto © Michael Braun
+        alt: Aufnahme der freigeformten, gewölbten Prototypen-Struktur.
   - title: robotic mosaic
     blurb: >-
       **Robotic Mosaic** erforscht das Upcycling von Keramikabfall zur Herstellung von Mosaiken. Zentraler Bestandteil ist ein von mir entwickelter Algorithmus, der digitalisierte Keramikbruchstücke anhand diverser Parameter kollisionsfrei anordnet. Dieser Algorithmus ist in einen Workflow integriert, bei dem ein Roboter die Bruchstücke mit einer integrierten Kamera digitalisiert. Dabei kommt eine Pipeline aus Computer Vision und maschinellem Lernen zur Erkennung von Form und Farbe zum Einsatz. Mosaikdesigns können in einer 2D-Prototyping-GUI generiert oder über Rhino3D/Grasshopper in den 3D-Raum übertragen werden. Die Fertigung erfolgt mithilfe eines robotischen Pick-and-Place-Systems: Für 2D-Mosaike werden die Bruchstücke direkt platziert, während 3D-Mosaike das Wenden der Bruchstücke mit einem zusätzlichen pneumatischen Greifer sowie ihre Platzierung in einer robotisch hergestellten Erdschalung erfordern. Das Design und die Herstellung der Fassadenpaneele erfolgten im Rahmen einer MAS-Abschlussarbeit. Das Erdschalungssystem wird in einem separaten Forschungsprojekt entwickelt.

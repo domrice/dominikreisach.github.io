@@ -1,22 +1,30 @@
 ---
 title: Appelstrasse
+description: >-
+  The competition proposal for a new façade of the high-rise at Appelstrasse in Hanover, Germany, aimed to strengthen the buildings presence as a landmark while responding sensitively to its urban context.
 order: 8
 category: design
 grad: 3
-thumb: /imgs/2019-07_appelstrasse/uh0_dr_thumb.avif
+thumb: /imgs/2019-07_appelstrasse/uh0_dr_thumb
 hero:
   src: /imgs/2019-07_appelstrasse/uh7_dr
+  alt: Rendering of the refurbished high-rise from the street at dusk
   credit: © Allmann Wappner Architekten
 media:
   - src: /imgs/2019-07_appelstrasse/uh2_dr
+    alt: Two elevations of the tower with the new glass louvre façade
     credit: © Allmann Wappner Architekten
   - src: /imgs/2019-07_appelstrasse/uh3_dr
+    alt: Façade section and detail elevation of the ground-floor entrance
     credit: © Allmann Wappner Architekten
   - src: /imgs/2019-07_appelstrasse/uh4_dr
+    alt: Exploded axonometric of the double-skin façade with sun and airflow
     credit: © Allmann Wappner Architekten
   - src: /imgs/2019-07_appelstrasse/uh5_dr
+    alt: Typical floor plan
     credit: © Allmann Wappner Architekten
   - src: /imgs/2019-07_appelstrasse/uh0_dr
+    alt: Rendering of the tower ground floor with the event location
     credit: © Allmann Wappner Architekten
     portrait: true
 type: Competition

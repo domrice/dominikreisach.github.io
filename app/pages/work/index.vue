@@ -1,7 +1,10 @@
 <template>
   <div class="relative min-h-screen w-full">
-    <CloseLink grad="from-brand-purple to-brand-blue" />
-    <div class="mx-auto max-w-[120rem] pt-20 lg:pt-36 pb-6 px-6 lg:px-12">
+    <CloseLink :grad="grads[2]" />
+    <main class="mx-auto max-w-[120rem] pt-20 lg:pt-36 pb-6 px-6 lg:px-12">
+      <!-- the section labels are the visible headings; the page's own title lives in the
+           tab and here, so heading navigation starts at a top level -->
+      <h1 class="sr-only">selected work</h1>
       <section v-for="g in grouped" :key="g.label" class="mb-10 lg:mb-16">
         <h2 class="lowercase text-2xl lg:text-3xl mb-3">{{ g.label }}</h2>
         <div
@@ -13,15 +16,22 @@
             :to="item.path"
             class="group relative block border border-solid border-black aspect-square overflow-hidden focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white"
           >
-            <img
-              :src="item.thumb"
-              alt=""
-              width="800"
-              height="800"
-              loading="lazy"
-              decoding="async"
-              class="absolute inset-0 object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
-            />
+            <!-- the .jpg twin is not cosmetic here: the tile label is hidden at rest on
+                 pointer devices, so on a browser without AVIF a bare .avif leaves a blank
+                 square with no text and no route to the project. scripts/thumb-jpg.mjs
+                 keeps the pair in sync. `contents` lets the <img> take the tile's own
+                 absolute positioning — <picture> is a box the layout must not see. -->
+            <picture class="contents">
+              <source :srcset="`${item.thumb}.avif`" type="image/avif" />
+              <img
+                :src="`${item.thumb}.jpg`"
+                alt=""
+                v-bind="sizeAttrs(item.thumb)"
+                loading="lazy"
+                decoding="async"
+                class="absolute inset-0 object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
+              />
+            </picture>
             <!-- the project's chromatic key, as the pointer reward. Sits beneath the scrim so
                  centred white type clears the amber stops. opacity is what fades —
                  background-image cannot be transitioned, so the old transition-all never ran. -->
@@ -42,7 +52,7 @@
           </NuxtLink>
         </div>
       </section>
-    </div>
+    </main>
   </div>
 </template>
 
@@ -53,6 +63,12 @@ const sections = [
   ["design", "architecture & design"],
   ["misc", "misc"],
 ] as const;
+
+usePageSeo({
+  title: "selected work",
+  description:
+    "Selected projects across computation, architecture & design — from material capture and algorithmic design to robotic fabrication.",
+});
 
 const { data: items } = await useAsyncData("work-list", () =>
   queryCollection("work").order("order", "ASC").all(),

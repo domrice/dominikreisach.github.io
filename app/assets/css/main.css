@@ -28,9 +28,41 @@
 
 @layer base {
   body { background: #000; color: #fff; font-family: var(--font-titillium); }
+  /* the scrollbar is a surface we didn't draw but still ship: a hairline-thin
+     muted-white thumb on a transparent track, so "this page scrolls" reads
+     without a slab of OS grey landing on the black ground */
+  html { scrollbar-width: thin; scrollbar-color: rgb(255 255 255 / 0.5) transparent; }
+
+  /* WCAG 3.2.5: a link that leaves the page says so, once, for everyone. One
+     attribute rule reaches every outbound link on the site — hand-written and
+     markdown alike — because `external` (app/utils/external.ts) is the only
+     source of target="_blank". The mark is drawn rather than typed: the latin
+     subset ships no U+2197, so the glyph is not the font's to give. The string
+     after the slash is the generated content's alt text, which is what a
+     screen reader adds to the link's name; :lang(de) covers the German pitch
+     pages. Anchors wrapping an icon are excluded — they have no text to mark
+     and carry the notice in their own aria-label. */
+  a[target="_blank"]:not(:has(svg))::after {
+    content: "" / " (opens in a new tab)";
+    display: inline-block; /* an atomic inline: the mark stays out of the underline */
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: 0.3em;
+    background-color: rgb(255 255 255 / 0.5);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.6 2H8v4.4' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+  }
+  :lang(de) a[target="_blank"]:not(:has(svg))::after { content: "" / " (öffnet in einem neuen Tab)"; }
 }
 
-/* hide scrollbars (was .scrollbar-hide) */
+/* Tailwind's breakpoints are all width-based, and the home page's failure mode is
+   height: the entry stack needs ~320px of content, so a landscape phone, a short
+   desktop window, or 400% zoom (WCAG 1.4.10 reflow) can push it past the viewport.
+   `tall:` is the guard that lets `scrollbar-hide` apply only where the screen is
+   provably deep enough that nothing can be hidden below the fold. 480px is the
+   measured ~320px plus margin for a wrapping name. */
+@custom-variant tall (@media (min-height: 480px));
+
+/* opt-out for the home page, whose one screen never scrolls — see `tall:` above */
 @utility scrollbar-hide {
   &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none;
