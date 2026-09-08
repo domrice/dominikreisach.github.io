@@ -9,7 +9,7 @@ thumb: /imgs/2022-09_offcut_tales/ot0_dr_thumb
 hero:
   src: /imgs/2022-09_offcut_tales/ot1_dr
   credit: Photo © Michael Braun
-  alt: Detailed photograph of a
+  alt: Detailed photograph of the free-form arched demonstrator.
 media:
   - src: /imgs/2022-09_offcut_tales/ot2i_dr
     alt: Diagram of the lifecycle of a tree in the timber industry.
