@@ -23,5 +23,9 @@
   },
   "overrides": {
     "oxc-parser": "^0.144.0"
-  }
+  },
+  "packageManager": "bun@1.4.2",
+  "trustedDependencies": [
+    "better-sqlite3"
+  ]
 }
