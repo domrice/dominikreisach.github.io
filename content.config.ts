@@ -83,6 +83,7 @@ export default defineContentConfig({
         // published paper awaiting its DOI is never labelled as unpublished
         status: z.string().optional(), // "in press"
         links: z.array(z.object({ label: z.string(), href: z.string() })).optional(),
+        bibtex: z.string().optional(), // copied to the clipboard, not downloaded
       }),
     }),
   },

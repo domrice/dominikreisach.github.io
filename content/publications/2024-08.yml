@@ -16,4 +16,18 @@ links:
       label: "conference paper",
       href: "https://doi.org/10.1007/978-3-031-68275-9_10",
     }
-  - { label: "bibtex", href: /bibtex/lawWebBasedMaterialDatabase2024.bib }
+bibtex: |
+  @incollection{lawWebBasedMaterialDatabase2024,
+    title = {Web-{{Based Material Database}} for {{Circular Design}}},
+    booktitle = {Scalable {{Disruptors}}},
+    author = {Law, Ian and Chang, Keng Chia and {\"O}nalan, Beril and Reisach, Dominik and Griffioen, Simon and De Saussure, Arabelle and Dillenburger, Benjamin and De Wolf, Catherine},
+    editor = {Eversmann, Philipp and Gengnagel, Christoph and Lienhard, Julian and Ramsgaard Thomsen, Mette and Wurm, Jan},
+    year = 2024,
+    month = aug,
+    series = {Design {{Modelling Symposium}}},
+    number = {2024},
+    pages = {116--127},
+    publisher = {Springer Nature Switzerland},
+    address = {Cham},
+    doi = {10.1007/978-3-031-68275-9_10},
+  }

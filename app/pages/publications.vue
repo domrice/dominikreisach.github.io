@@ -54,7 +54,7 @@
           <!-- gap owns the rhythm, so no whitespace ever lands inside an
                underline; the middot is decoration, hidden from the reading order -->
           <div
-            v-if="p.links?.length"
+            v-if="p.links?.length || p.bibtex"
             class="flex flex-wrap items-baseline gap-x-2 gap-y-1"
           >
             <template v-for="(l, i) in p.links" :key="l.href">
@@ -65,6 +65,19 @@
                 :href="l.href"
                 >{{ l.label }}</a
               >
+            </template>
+            <!-- copy, not download: a LaTeX user pastes the entry into their own
+                 .bib; Zotero users already have the DOI link above -->
+            <template v-if="p.bibtex">
+              <span v-if="p.links?.length" aria-hidden="true" class="text-white/50">·</span>
+              <button
+                type="button"
+                aria-live="polite"
+                :class="[linkClass, linkGrad(p.links?.length ?? 0), 'cursor-pointer']"
+                @click="copyBib(p)"
+              >
+                {{ copied === p.title ? "copied" : "bibtex" }}
+              </button>
             </template>
           </div>
         </div>
@@ -94,6 +107,15 @@
 const hl = `${clipGrad.group.r} ${grads[4]}`;
 // Link Cycle Rule, started on pair 3 so a card's first link doesn't repeat the close glyph
 const linkGrad = (i: number) => gradCycle(i + 3);
+
+const copied = ref<string>();
+let reset: ReturnType<typeof setTimeout>;
+const copyBib = async (p: { title: string; bibtex?: string }) => {
+  await navigator.clipboard.writeText(p.bibtex!);
+  copied.value = p.title;
+  clearTimeout(reset);
+  reset = setTimeout(() => (copied.value = undefined), 2000);
+};
 
 const mark = { first: "○", super: "△" };
 
