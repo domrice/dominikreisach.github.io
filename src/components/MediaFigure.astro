@@ -1,0 +1,61 @@
+---
+import MediaVideo from "./MediaVideo.astro";
+import { Picture } from "astro:assets";
+import { picture, still } from "../utils/images";
+
+// alt is authored per item in frontmatter, and the two collections earn their
+// defaults differently. On `work` a `credit` is attribution ("Photo © …"), which
+// describes nothing — so all 106 items carry a real `alt`. On `pitch` the same
+// field is used as a German descriptive caption, and a `<figcaption>` inside the
+// `<figure>` is already announced with the image; alt there would say it twice, so
+// absent alt is correct. The exception is a pitch item whose caption is *only*
+// attribution — those carry an `alt` of their own.
+type Props = { src: string; portrait?: boolean; credit?: string; alt?: string; priority?: boolean };
+const { src, portrait, credit, alt, priority } = Astro.props;
+// a clip is authored as its .webm; MediaVideo derives the .mp4 and _poster from the base
+const base = src.replace(/\.webm$/, "");
+const video = base !== src;
+
+// `sizes` for the max-w-5xl column (work pages, pitch): 1024 − 2×48 padding = 928px,
+// halved minus the gap-6 for a portrait in the two-column grid; px-6 below `lg`.
+const sizes = portrait
+  ? "(min-width: 1024px) 452px, (min-width: 900px) calc(50vw - 60px), calc(100vw - 48px)"
+  : "(min-width: 1024px) 928px, (min-width: 900px) calc(100vw - 96px), calc(100vw - 48px)";
+
+// A credit floats on its media, revealed on hover where hover exists (always visible
+// on touch). A still's takes the bottom edge; a video's takes the top, leaving the
+// bottom to the native control bar.
+const caption = [
+  "absolute inset-x-0 p-4 text-center uppercase tracking-widest text-xs text-white transition-opacity duration-300 [@media(hover:hover)]:opacity-0 group-hover:opacity-100",
+  video
+    ? "top-0 rounded-t-md bg-linear-to-b from-black/85 via-black/45 to-transparent"
+    : "bottom-0 rounded-b-md bg-linear-to-t from-black/85 via-black/45 to-transparent",
+];
+---
+
+{/* the figure wrapper owns grid placement so the credit can sit over the media:
+    portraits are boxed to 3:4 so a pair lines up; landscapes keep their own height across both columns */}
+<figure
+  class:list={["relative group", portrait ? "aspect-[3/4]" : "lg:col-span-2"]}
+>
+  {
+    video ? (
+      <MediaVideo
+        base={base}
+        alt={alt}
+        class="rounded-md w-full h-full object-cover"
+      />
+    ) : (
+      <Picture
+        {...picture}
+        src={still(src)}
+        sizes={sizes}
+        alt={alt || ""}
+        class="rounded-md w-full h-full object-cover"
+        pictureAttributes={{ class: "contents" }}
+        priority={priority}
+      />
+    )
+  }
+  {credit && <figcaption class:list={caption}>{credit}</figcaption>}
+</figure>

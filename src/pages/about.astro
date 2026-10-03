@@ -1,0 +1,86 @@
+---
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import CloseLink from "../components/CloseLink.astro";
+import { external } from "../utils/external";
+import { gradCycle, grads } from "../utils/grads";
+import { picture, still } from "../utils/images";
+
+// Link Cycle Rule: prose links are numbered in reading order and step through the pairs
+const link = (i: number) => ["link", gradCycle(i)];
+---
+
+<Base
+  title="about"
+  description="I am a computational engineer and software developer specializing in geometry processing, computer vision, and digital fabrication."
+>
+  <div class="relative min-h-screen w-full">
+    <CloseLink grad={grads[1]} />
+    <main class="mx-auto max-w-6xl pt-20 lg:pt-36 pb-6 px-6 lg:px-12">
+      {/* the design shows no page title here; screen-reader heading navigation still needs one */}
+      <h1 class="sr-only">about</h1>
+      {/* scrim is the whole card, so the image edge reads as the scrim edge; on lg the
+          square photo covers the text's height so top/bottom line up exactly.
+          sizes: half the max-w-6xl card (1152 − 2×48 = 1056px) from `lg`, full below */}
+      <div
+        class="scrim flex flex-col lg:flex-row overflow-hidden"
+      >
+        <Picture
+          {...picture}
+          src={still("/imgs/0000-02_else/dr")}
+          sizes="(min-width: 1152px) 528px, (min-width: 900px) 50vw, calc(100vw - 48px)"
+          alt="Dominik Reisach"
+          class="w-full h-full object-cover"
+          pictureAttributes={{ class: "lg:basis-1/2 lg:shrink-0" }}
+          priority
+        />
+        {/* gap-6: the internal rhythm of a scrim panel */}
+        <div
+          class="flex flex-col gap-6 text-pretty lg:text-justify lg:basis-1/2 p-6 self-center"
+        >
+          <p>
+            I am a computational engineer and software developer specializing in
+            geometry processing, computer vision, and digital fabrication. My
+            work focuses on developing robust computational pipelines and
+            optimization tools for 3D modeling, robotic fabrication, and
+            generative design.
+          </p>
+          <p>
+            My background in architecture gives me strong spatial and geometric
+            intuition, which I apply to computational workflows for complex
+            design and fabrication problems. I have built a <a
+              class:list={link(0)}
+              href="https://github.com/domrice/Spruce-Beetle"
+              {...external}
+            >Rhino3D/Grasshopper plugin</a> that automates the upcycling of timber waste using C#, developed
+            packing and stacking algorithms in Python that combine computational
+            geometry and machine learning, and created vision-based robotic
+            fabrication systems for material-aware production.
+          </p>
+          <p>
+            I am currently pursuing a PhD at <a class:list={link(1)} href="https://ethz.ch/en" {...external}>ETH Zurich</a>,
+            co-supervised by <a
+              class:list={link(2)}
+              href="https://www.langenberg.arch.ethz.ch/?lang=en"
+              {...external}
+            >Silke Langenberg</a> and <a
+              class:list={link(3)}
+              href="https://dbt.arch.ethz.ch/"
+              {...external}
+            >Benjamin Dillenburger</a>, focusing on computational methods for upcycling stone offcuts and
+            ceramic tiles through integrated geometry processing, automated
+            design workflows, and robotic fabrication. I am part of the <a
+              class:list={link(4)}
+              href="https://dfab.ch/"
+              {...external}
+            >NCCR Digital Fabrication</a> and an associated PhD Researcher at <a
+              class:list={link(5)}
+              href="https://designplusplus.ethz.ch/"
+              {...external}
+            >Design++</a> and the <a class:list={link(6)} href="https://ai.ethz.ch/" {...external}>ETH AI Center</a>.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+</Base>

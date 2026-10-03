@@ -1,0 +1,130 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import MediaFigure from "../../components/MediaFigure.astro";
+import PitchSection from "../../components/PitchSection.astro";
+import SocialLinks from "../../components/SocialLinks.astro";
+import { isExternal, markdown } from "../../utils/external";
+import { grads, prose, proseGrads } from "../../utils/grads";
+import { pitchText } from "../../utils/pitchText";
+import { socials } from "../../utils/socials";
+
+export async function getStaticPaths() {
+  return (await getCollection("pitch")).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+type Props = { entry: CollectionEntry<"pitch"> };
+const { entry } = Astro.props;
+const doc = entry.data;
+
+// intro and blurbs are markdown strings: rendered once at build, through the same
+// pipeline as the work bodies, so their links behave identically
+const md = await markdown.createRenderer({});
+const html = async (s: string) => (await md.render(s)).code;
+const intro = await html(doc.intro);
+const projects = await Promise.all(
+  doc.projects.map(async (p) => ({ ...p, blurb: await html(p.blurb) })),
+);
+
+// the box is the 44px+ target (WCAG 2.5.5), the glyph is centred in it; 48px at `lg`
+// so the ring doesn't trace a 40px glyph. `transition-[fill]`: the ring appears instantly.
+const socialIcon =
+  "group focus-ring inline-flex size-11 lg:size-12 items-center justify-center rounded-sm fill-white hover:fill-brand-pink focus-visible:fill-brand-pink transition-[fill] duration-300 ease-out";
+
+// the lean-in lives on the <svg>: transforms are ignored on an inline <a>. 1.10 matches
+// the work tile; reduced motion keeps the colour, drops the movement.
+const socialGlyph =
+  "h-8 lg:h-10 transition-transform duration-300 ease-out group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transform-none";
+
+const t = pitchText[doc.lang];
+
+// the reply-to plus the two profiles a pitch recipient actually follows up on
+const links = socials.slice(0, 3).map((s) => (isExternal(s.href) ? s : { ...s, label: t.email }));
+---
+
+{/* the recipient is the point of a pitch page; the slug already names them.
+    No description: unlisted by design, sent as a direct link, never indexed */}
+<Base
+  title={doc.recipient ?? entry.id}
+  lang={doc.lang}
+  footer={false}
+>
+  {/* a pink hairline between sections, whichever of them are present */}
+  <main class="mx-auto max-w-5xl px-6 lg:px-12 [&>section+section]:border-t [&>section+section]:border-brand-pink">
+    {/* a pitch opens straight into "about me"; the h1 names whose pitch it is */}
+    <h1 class="sr-only">dominik reisach</h1>
+    <PitchSection title={t.about} grad={grads[doc.grad]}>
+      <div
+        class:list={["scrim p-6 text-2xl lg:text-3xl text-white leading-relaxed text-pretty", prose, proseGrads[doc.grad]]}
+        set:html={intro}
+      />
+    </PitchSection>
+
+    <PitchSection title={t.projects} grad={grads[5]}>
+      {/* the projects are their own gapped column so the section gap can stay the
+           heading distance every other section uses; 80px separates two projects */}
+      <div class="flex flex-col gap-20">
+        {
+          projects.map((p) => (
+            <div class="flex flex-col gap-8">
+              {/* title and blurb are one group: tighter to each other than to the media */}
+              <div class="flex flex-col gap-6">
+                <h3 class="text-2xl lg:text-4xl text-white">{p.title}</h3>
+                <div
+                  class:list={["scrim p-6 text-lg lg:text-xl text-white text-pretty lg:text-justify", prose, proseGrads[doc.grad]]}
+                  set:html={p.blurb}
+                />
+              </div>
+              {/* landscape spans both columns, portrait takes one so pairs share a row */}
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                {p.media.map((m) => <MediaFigure {...m} />)}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </PitchSection>
+
+    {
+      doc.closing && (
+        <PitchSection title={doc.closing.title} grad={grads[4]}>
+          <blockquote class="scrim p-6 text-2xl lg:text-3xl text-white leading-relaxed text-pretty">
+            {doc.closing.text}
+          </blockquote>
+        </PitchSection>
+      )
+    }
+
+    <PitchSection title={t.contact} grad={grads[5]} class="text-center">
+      <div class="scrim p-8 flex flex-col items-center gap-8">
+        {
+          t.contactText && (
+            <p class="text-xl lg:text-2xl text-white/80 leading-relaxed">
+              {t.contactText}
+            </p>
+          )
+        }
+        {/* the 44px boxes carry their own padding, so the visible spacing is gap + that */}
+        <SocialLinks
+          links={links}
+          newTab={t.newTab}
+          class="flex justify-center gap-5 lg:gap-6"
+          link={socialIcon}
+          glyph={socialGlyph}
+        />
+        {/* pitches are opened from a direct link, so there is nothing to go "back" to —
+           offer the rest of the site at the end instead of a close button at the top */}
+        <a
+          href="/"
+          class:list={["sweep text-xl lg:text-2xl text-white", grads[5]]}
+        >{t.explore} →</a>
+      </div>
+      <div class="text-sm text-white/60">
+        © {new Date().getFullYear()} Dominik Reisach. {t.rights}
+      </div>
+    </PitchSection>
+  </main>
+</Base>

@@ -18,4 +18,4 @@ User-agent: meta-externalagent
 User-agent: Amazonbot
 Disallow: /
 
-Sitemap: https://dominikreisach.xyz/sitemap.xml
+Sitemap: https://dominikreisach.xyz/sitemap-index.xml

@@ -1,0 +1,104 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import CloseLink from "../../components/CloseLink.astro";
+import MediaFigure from "../../components/MediaFigure.astro";
+import { external } from "../../utils/external";
+import { grads, prose, proseGrads } from "../../utils/grads";
+
+export async function getStaticPaths() {
+  return (await getCollection("work")).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+type Props = { entry: CollectionEntry<"work"> };
+const { entry } = Astro.props;
+const doc = entry.data;
+const { Content } = await render(entry);
+
+const meta = [doc.type, doc.place, doc.year].filter(Boolean);
+
+// titles are authored lowercase in frontmatter, matching the Lowercase Rule.
+// description falls back to the meta line for the one project with no prose.
+---
+
+<Base
+  title={doc.title}
+  description={doc.description || meta.join(" · ")}
+  image={`/og/${entry.id}.jpg`}
+>
+  <div class="relative min-h-screen w-full">
+    {/* right-20/-32 reserves the close glyph's corner: the title wraps or shrinks
+         rather than running under it. w-fit keeps the hover box on the glyphs. */}
+    <div
+      class="fixed top-6 lg:top-12 left-6 lg:left-12 right-20 lg:right-32 z-10"
+    >
+      <h1
+        class:list={["sweep w-fit lowercase text-2xl md:text-4xl lg:text-6xl", grads[doc.grad]]}
+      >
+        {doc.title}
+      </h1>
+    </div>
+    <CloseLink to="/work" grad={grads[doc.grad]} />
+
+    <main
+      class="flex flex-col gap-8 lg:gap-12 mx-auto max-w-5xl pt-20 lg:pt-36 pb-6 px-6 lg:px-12"
+    >
+      {doc.hero && <MediaFigure {...doc.hero} priority />}
+
+      <div class="scrim flex flex-col gap-6 max-w-3xl p-6">
+        {
+          !!meta.length && (
+            <p class="uppercase tracking-widest text-xs text-white/60">
+              {meta.join(" · ")}
+            </p>
+          )
+        }
+
+        {/* an empty body renders no div, which would still take a gap in this column */}
+        {
+          entry.body?.trim() && (
+            <div
+              class:list={["text-left lg:text-justify", prose, proseGrads[doc.grad]]}
+            >
+              <Content />
+            </div>
+          )
+        }
+
+        {
+          doc.credits && (
+            <dl class="grid gap-x-8 gap-y-2 sm:grid-cols-[auto_1fr] text-sm border-t border-white/10 pt-6">
+              {doc.credits.map((c) => (
+                <>
+                  {/* the quietest tier in the system: /60 measures 7.0:1 on black and
+                       ~4.7:1 over the scrim, so a role label stays readable at 14px */}
+                  <dt class="text-white/60">{c.role}</dt>
+                  <dd class="text-white/80 mb-2 sm:mb-0">
+                    {c.people.map((p, i) => (
+                      <>
+                        {i > 0 && <span>, </span>}
+                        {p.url ? (
+                          <a href={p.url} {...external} class:list={["link", grads[doc.grad]]}>{p.name}</a>
+                        ) : (
+                          p.name
+                        )}
+                      </>
+                    ))}
+                  </dd>
+                </>
+              ))}
+            </dl>
+          )
+        }
+      </div>
+
+      {/* landscape spans both columns (natural height, no crop), portrait takes one so pairs share a row */}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        {doc.media?.map((m) => <MediaFigure {...m} />)}
+      </div>
+    </main>
+  </div>
+</Base>

@@ -30,44 +30,23 @@ const MARK = [
 ]
 const N = MARK.length
 
-// greedy maximal rectangles: widest run first, then as far down as that exact run holds.
-// 29 lit pixels collapse to 6 rects, which is what keeps the SVG a few hundred bytes.
-const rects = (grid) => {
-  const seen = grid.map(r => [...r].map(() => false))
-  const out = []
-  const lit = (x, y) => grid[y][x] === '#' && !seen[y][x]
-  for (let y = 0; y < grid.length; y++)
-    for (let x = 0; x < grid[y].length; x++) {
-      if (!lit(x, y)) continue
-      let w = 0, h = 1
-      while (lit(x + w, y)) w++
-      while (y + h < grid.length && [...Array(w)].every((_, i) => lit(x + i, y + h))) h++
-      for (let dy = 0; dy < h; dy++) for (let dx = 0; dx < w; dx++) seen[y + dy][x + dx] = true
-      out.push({ x, y, w, h })
-    }
-  return out
-}
-
 // crispEdges so the tab favicon lands on the pixel grid the mark was drawn on
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${N} ${N}" shape-rendering="crispEdges">
   <rect width="${N}" height="${N}" fill="${PINK}"/>
-  <path fill="${WHITE}" d="${rects(MARK).map(r => `M${r.x} ${r.y}h${r.w}v${r.h}h-${r.w}z`).join('')}"/>
+  <path fill="${WHITE}" d="${MARK.flatMap((r, y) => [...r].map((c, x) => (c === '#' ? `M${x} ${y}h1v1h-1z` : ''))).join('')}"/>
 </svg>
 `
 writeFileSync('public/favicon.svg', svg)
 console.log('public/favicon.svg')
 
 // P3 PPM: the map as literal pixels, so no rasteriser gets a say in the geometry
-const ppm = (grid) => {
-  const n = grid.length
-  const px = grid.flatMap(row => [...row].map(c => (c === '#' ? '255 255 255' : '249 47 139')))
-  writeFileSync('/tmp/dr-mark.ppm', `P3\n${n} ${n}\n255\n${px.join('\n')}\n`)
-  return '/tmp/dr-mark.ppm'
-}
-const base = ppm(MARK)
+const base = '/tmp/dr-mark.ppm'
+const px = MARK.flatMap(row => [...row].map(c => (c === '#' ? '255 255 255' : '249 47 139')))
+writeFileSync(base, `P3\n${N} ${N}\n255\n${px.join('\n')}\n`)
 
 // -filter point = nearest neighbour: an integer scale of a pixel drawing has one correct
 // answer, and it is not interpolation
+/** @param {string} src @param {number} mult @param {string} out @param {string[]} extra */
 const grow = (src, mult, out, extra = []) => {
   execFileSync('magick', [src, '-filter', 'point', '-resize', `${mult * 100}%`, ...extra, '-strip', out])
   console.log(out)
@@ -82,19 +61,12 @@ grow(base, 32, 'public/icon-512.png') // manifest, splash and install dialogs
 
 // 180 is not a multiple of 16, so go crisp to 720 (45x) and box-average down by exactly 4:
 // every stem lands on the same 11.25px, which nearest-neighbour at 180 could not promise
-grow(base, 45, '/tmp/dr-mark-720.png')
-execFileSync('magick', ['/tmp/dr-mark-720.png', '-filter', 'box', '-resize', '180x180', '-strip', 'public/apple-touch-icon.png'])
-console.log('public/apple-touch-icon.png')
+grow(base, 45, 'public/apple-touch-icon.png', ['-filter', 'box', '-resize', '180x180'])
 
 // Android masks icons to its own shape and only guarantees the central 80%. The mark fills
 // 62.5% of the grid, whose corners sit exactly on that boundary — a 20-unit grid drops it
-// to 50% and puts the descender corners comfortably inside.
-const pad = 2
-const padded = MARK.map(r => '.'.repeat(pad) + r + '.'.repeat(pad))
-const framed = [...Array(pad).fill('.'.repeat(N + 2 * pad)), ...padded, ...Array(pad).fill('.'.repeat(N + 2 * pad))]
-grow(ppm(framed), 32, '/tmp/dr-mark-maskable.png') // 20 * 32 = 640
-execFileSync('magick', ['/tmp/dr-mark-maskable.png', '-filter', 'box', '-resize', '512x512', '-strip', 'public/icon-maskable-512.png'])
-console.log('public/icon-maskable-512.png')
+// to 50% and puts the descender corners comfortably inside: 2 grid units of border at 32x.
+grow(base, 32, 'public/icon-maskable-512.png', ['-bordercolor', PINK, '-border', '64', '-filter', 'box', '-resize', '512x512'])
 
 // display: browser — the icons are for a home-screen shortcut, not an app shell.
 // theme/background are the site's ground, so a shortcut opens into black, not white.

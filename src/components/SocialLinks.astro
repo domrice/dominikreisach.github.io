@@ -1,0 +1,34 @@
+---
+import { external, isExternal } from "../utils/external";
+import type { socials } from "../utils/socials";
+
+// the footer's and a pitch page's icon row: same links, their own look
+type Props = { links: typeof socials; newTab: string; class: string; link: string; glyph: string };
+const { links, newTab, class: className, link, glyph } = Astro.props;
+---
+
+<ul class={className}>
+  {
+    links.map((s) => (
+      <li>
+        <a
+          class={link}
+          href={s.href}
+          aria-label={isExternal(s.href) ? `${s.label} (${newTab})` : s.label}
+          {...(isExternal(s.href) ? external : {})}
+        >
+          {/* the icon carries no accessible name of its own; the anchor's label does */}
+          <svg
+            class={glyph}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox={s.viewBox}
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d={s.path} />
+          </svg>
+        </a>
+      </li>
+    ))
+  }
+</ul>

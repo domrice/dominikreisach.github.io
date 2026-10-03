@@ -14,7 +14,7 @@ links:
     }
   - {
       label: "github",
-      href: "https://github.com/dominikreisach/Spruce-Beetle",
+      href: "https://github.com/domrice/Spruce-Beetle",
     }
 bibtex: |
   @incollection{reisachDesigntoFabricationWorkflowFreeForm2023,
