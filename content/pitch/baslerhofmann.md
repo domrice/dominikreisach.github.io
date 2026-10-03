@@ -41,7 +41,7 @@ projects:
         portrait: true
   - title: offcut tales
     blurb: >-
-      **Offcut Tales** ist ein Forschungsprojekt und Teil meiner Masterarbeit mit Fokus auf Kreislaufwirtschaft und Automatisierung im Holzbau. Im Rahmen des Projektes habe ich das Rhino3D/Grasshopper-Plugin [Spruce Beetle](https://github.com/dominikreisach/Spruce-Beetle) in C# entwickelt, um die Nutzung von Restholz zu optimieren—vom computergestützten Entwurf bis zur robotischen Fertigung. Der Algorithmus hat Zugriff auf eine Datenbank mit Kappstücken und generiert deren Positionen, Verbindungen und die Fräsbahnen. Zur Validierung des Workflows habe ich eine Prototypen-Struktur entworfen und mit einem UR10e-Roboter gefertigt.
+      **Offcut Tales** ist ein Forschungsprojekt und Teil meiner Masterarbeit mit Fokus auf Kreislaufwirtschaft und Automatisierung im Holzbau. Im Rahmen des Projektes habe ich das Rhino3D/Grasshopper-Plugin [Spruce Beetle](https://github.com/domrice/Spruce-Beetle) in C# entwickelt, um die Nutzung von Restholz zu optimieren—vom computergestützten Entwurf bis zur robotischen Fertigung. Der Algorithmus hat Zugriff auf eine Datenbank mit Kappstücken und generiert deren Positionen, Verbindungen und die Fräsbahnen. Zur Validierung des Workflows habe ich eine Prototypen-Struktur entworfen und mit einem UR10e-Roboter gefertigt.
     media:
       - src: /imgs/2022-09_offcut_tales/ot11_dr
         credit: Foto © Michael Braun

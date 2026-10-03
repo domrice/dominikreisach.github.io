@@ -1,0 +1,77 @@
+---
+import { getImage } from "astro:assets";
+import { still } from "../utils/images";
+
+// a <video> has no alt: the description becomes its accessible name instead
+type Props = { base: string; alt?: string; class?: string };
+const { base, alt, class: className } = Astro.props;
+
+// `poster` takes one URL, no srcset: 1280 matches the 720p clips (sharp never
+// upscales the smaller ones). AVIF only — a browser without it shows no poster
+// until the clip plays, rather than every browser paying for a JPG.
+const poster = await getImage({ src: still(`${base}_poster`), width: 1280, format: "avif" });
+---
+
+{/* controls: a loop >5s needs a stop for everyone (WCAG 2.2.2); nodownload: All
+    Rights Reserved; no PiP: its button sits where the credit lives.
+    all clips are 16:9 after SAR correction; fixes layout before metadata loads */}
+<video
+  data-autoplay
+  aria-label={alt || undefined}
+  poster={poster.src}
+  width="16"
+  height="9"
+  preload="none"
+  controls
+  controlslist="nodownload"
+  disablepictureinpicture
+  loop
+  muted
+  playsinline
+  class:list={[
+    "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white",
+    className,
+  ]}
+>
+  {/* Apple ships no software AV1 decoder, so Safari before M3/A17 Pro needs h264.
+      The codecs string lets it say no up front instead of fetching a webm it then
+      cannot decode: AV1 main profile, level 3.1 (720p30), 8-bit — scripts/video.mjs */}
+  <source src={`${base}.webm`} type='video/webm; codecs="av01.0.05M.08"' />
+  <source src={`${base}.mp4`} type="video/mp4" />
+</video>
+
+<script>
+  // autoplay would download the whole file immediately even with preload="none",
+  // so playback is gated on visibility instead (`data-autoplay` marks the clips)
+  // reduced motion gates only the start, read live at play time
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+
+  // the observer only ever pauses off-screen, so a pause that arrives while the
+  // clip is visible came from the visitor — and re-entering the viewport must not
+  // undo it, or `controls` would be a stop button the scroll position overrides
+  const visible = new WeakSet<EventTarget>();
+  const userPaused = new WeakSet<EventTarget>();
+
+  const io = new IntersectionObserver((entries) => {
+    for (const { target, isIntersecting } of entries) {
+      const v = target as HTMLVideoElement;
+      if (!isIntersecting) {
+        visible.delete(v);
+        v.pause();
+      } else {
+        visible.add(v);
+        if (!reduced.matches && !userPaused.has(v)) v.play();
+      }
+    }
+  });
+
+  // media events don't bubble, but they do capture: one pair of listeners on
+  // document, attached once per visit, covers every clip on every page
+  document.addEventListener("pause", (e) => visible.has(e.target!) && userPaused.add(e.target!), true);
+  document.addEventListener("play", (e) => userPaused.delete(e.target!), true);
+
+  document.addEventListener("astro:page-load", () =>
+    document.querySelectorAll("video[data-autoplay]").forEach((v) => io.observe(v)),
+  );
+  document.addEventListener("astro:before-swap", () => io.disconnect());
+</script>

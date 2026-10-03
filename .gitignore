@@ -1,21 +1,24 @@
 node_modules
-.nuxt
-.output
-.data
 dist
+.astro
 .DS_Store
 *.log
 
-# ProRes masters live in masters/, outside public/ so they never ship
-*.mov
+# video sources (ProRes, or the best encode that exists) live in masters/<project>/,
+# outside public/ so they never ship; scripts/video.mjs encodes them into public/imgs/
+masters/
 
 # local Claude Code instructions
 CLAUDE.md
 .claude/
+
+# impeccable skill
 .impeccable
 DESIGN.md
 PRODUCT.md
-# PLAN.md
 .github/agents
 .github/hooks
 .github/skills
+
+# plans
+.archived_plans/

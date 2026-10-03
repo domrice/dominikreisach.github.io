@@ -1,0 +1,30 @@
+---
+import { grads } from "../utils/grads";
+import SocialLinks from "./SocialLinks.astro";
+import { pitchText } from "../utils/pitchText";
+import { socials } from "../utils/socials";
+---
+
+<footer class="w-full px-6 lg:px-12 pt-12 pb-6 text-xs text-center">
+  <div
+    class:list={[
+      "bg-linear-to-r rounded-sm p-3 flex flex-col lg:flex-row items-center lg:justify-between text-black",
+      grads[4],
+    ]}
+  >
+    <span class="pb-3 lg:pb-0"
+      >© {new Date().getFullYear()} Dominik Reisach. {pitchText.en.rights}</span
+    >
+    {/* inverted against the rest of the site: the bar is the one bright surface, so
+        black rests and white arrives on hover. size-11 is the 44px target Apple,
+        Android and WCAG 2.5.5 all ask for; the 16px glyph is centred in it. -my-3
+        lets those targets reclaim the bar's own p-3 instead of adding 24px of height */}
+    <SocialLinks
+      links={socials}
+      newTab={pitchText.en.newTab}
+      class="flex gap-1 -my-3"
+      link="inline-flex size-11 items-center justify-center rounded-sm fill-black hover:fill-white focus-visible:fill-white duration-500 outline-black focus-visible:outline-2 focus-visible:outline-offset-2"
+      glyph="h-4 lg:h-5"
+    />
+  </div>
+</footer>

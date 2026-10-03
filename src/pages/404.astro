@@ -1,0 +1,41 @@
+---
+import Base from "../layouts/Base.astro";
+import { gradCycle } from "../utils/grads";
+
+// a wrong project URL is the likeliest way anyone lands here, so the section index
+// leads: it is the likelier intent and the only page that can answer "what was here?"
+const exits = [
+  { to: "/work", label: "back to selected work" },
+  { to: "/", label: "back to the homepage" },
+];
+---
+
+{/* a prerendered 404.html is a route like any other — no description keeps it out of the index */}
+<Base title="page not found">
+  <main
+    class="flex flex-col items-center justify-center min-h-screen px-6 text-center"
+  >
+    <div class="scrim flex flex-col items-center gap-8 p-8">
+      <div class="flex flex-col items-center gap-6">
+        {/* the code is diagnostic, not the message: same micro-label slot as project meta */}
+        <p class="uppercase tracking-widest text-xs text-white/60">
+          error 404
+        </p>
+        <h1 class="text-3xl lg:text-5xl leading-tight text-balance max-w-2xl">
+          this page doesn’t exist.
+        </h1>
+      </div>
+      {/* the two exits step through the pairs by position (Link Cycle Rule) */}
+      <nav class="flex flex-wrap justify-center gap-x-10 gap-y-4">
+        {
+          exits.map((exit, i) => (
+            <a
+              href={exit.to}
+              class:list={["link text-xl lg:text-2xl", gradCycle(i)]}
+            >{exit.label} <span aria-hidden="true">&rarr;</span></a>
+          ))
+        }
+      </nav>
+    </div>
+  </main>
+</Base>

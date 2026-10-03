@@ -1,0 +1,16 @@
+---
+// One pitch section: a heading plate, then whatever the page slots in. `py-20` stays
+// padding, not gap: it is what centres the hairline the page draws between sections.
+type Props = { title: string; grad: string; class?: string };
+const { title, grad, class: className } = Astro.props;
+---
+
+<section class:list={["py-20 flex flex-col gap-16", className]}>
+  {/* the h2 is the scrim plate, an inner span owns the gradient: `bg-clip-text` clips
+      every background on its element, so a scrim beside it would be clipped to the
+      glyphs. No `w-fit`, so the plate spans the column like the prose panels below it. */}
+  <h2 class="scrim p-6 text-4xl lg:text-6xl text-center text-balance">
+    <span class:list={["inline-block clip-box bg-linear-to-r bg-clip-text text-transparent", grad]}>{title}</span>
+  </h2>
+  <slot />
+</section>

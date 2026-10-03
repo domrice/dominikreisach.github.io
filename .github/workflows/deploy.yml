@@ -1,35 +1,50 @@
-name: Deploy to GitHub Pages
+name: Build and deploy
 
+# PRs get the typecheck and build; main also deploys what passed them
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     # actions are pinned to commit SHAs — tags are mutable, SHAs are not.
     # Dependabot (.github/dependabot.yml) proposes updates with the new SHA + tag comment.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
       - run: bun install --frozen-lockfile
-      - run: bun run generate
-      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      # sharp's encodes of every still (~900 files, ~2 min cold). Astro reuses any whose
+      # source and per-image options are unchanged, so a partial hit still pays — but its
+      # hash ignores astro.config's quality settings, so config and sharp's version are the
+      # prefix: a partial hit only ever comes from a cache encoded with the same settings
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          path: .output/public
-      - id: deployment
-        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
+          path: node_modules/.astro/assets
+          key: astro-assets-${{ hashFiles('astro.config.mjs', 'bun.lock') }}-${{ hashFiles('src/assets/imgs/**') }}
+          restore-keys: astro-assets-${{ hashFiles('astro.config.mjs', 'bun.lock') }}-
+      - run: bunx astro check
+      - run: bun run build
+      - if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: github-pages
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    steps:
+      - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

@@ -1,0 +1,135 @@
+<div
+  id="sketch"
+  transition:persist="sketch"
+  class="fixed inset-0 -z-10 bg-black"
+  aria-hidden="true"
+>
+  {/* transparent over the holder's bg-black, which composites the same as painting on black */}
+  <canvas class="fixed top-0 left-0"></canvas>
+</div>
+
+<script>
+  // ClientRouter runs this once per visit and the holder is transition:persist, so there is
+  // no page-load hook and no unmount.
+  const canvas = document.querySelector<HTMLCanvasElement>("#sketch canvas")!;
+  const ctx = canvas.getContext("2d")!;
+  // read once at start
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // target point count, viewport-independent. 24k matches the density the sketch had at
+  // 1440x900, the viewport this composition was authored against.
+  const POINTS = 24000;
+
+  // p5's noise() at noiseDetail(1) with z = 0: one octave over a random 4096-value lattice,
+  // cosine-interpolated, scaled to 0–0.5. Same algorithm, so the same kind of field.
+  const PERLIN_SIZE = 4095;
+  const perlin = Array.from({ length: PERLIN_SIZE + 1 }, Math.random);
+  const fade = (t: number) => 0.5 * (1 - Math.cos(t * Math.PI));
+
+  function noise(x: number, y: number) {
+    x = Math.abs(x);
+    y = Math.abs(y);
+    const xi = Math.floor(x),
+      yi = Math.floor(y);
+    const rxf = fade(x - xi),
+      ryf = fade(y - yi);
+    const of = xi + (yi << 4);
+    const a = perlin[of & PERLIN_SIZE]!,
+      b = perlin[(of + 1) & PERLIN_SIZE]!,
+      c = perlin[(of + 16) & PERLIN_SIZE]!,
+      d = perlin[(of + 17) & PERLIN_SIZE]!;
+    const n1 = a + rxf * (b - a),
+      n2 = c + rxf * (d - c);
+    return 0.5 * (n1 + ryf * (n2 - n1));
+  }
+
+  let w = 0, h = 0, diameter: number, thickness: number;
+
+  // setting the canvas size wipes the buffer and the transform, so this redoes both
+  function resize() {
+    w = innerWidth;
+    h = innerHeight;
+    // a full-viewport canvas at 3x is ~2.25x the fill rate of 2x for dots this small
+    const dpr = Math.min(devicePixelRatio, 2);
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    ctx.scale(dpr, dpr);
+    if (w < 600) {
+      diameter = w / 2;
+      thickness = 1.5;
+    } else if (w < 900) {
+      diameter = w / 3;
+      thickness = 2.0;
+    } else {
+      diameter = w / 4;
+      thickness = 2.5;
+    }
+  }
+  resize();
+
+  // spacing from viewport AREA, so density is resolution-independent and the count
+  // lands near POINTS on every screen
+  const points: { x: number; y: number }[] = [];
+  const space = Math.sqrt((w * h) / POINTS);
+  for (let x = 0; x < w; x += space)
+    for (let y = 0; y < h; y += space)
+      points.push({ x: x + Math.random() * 100 - 50, y: y + Math.random() * 100 - 50 });
+  // Fisher–Yates, so the ramp below reveals points scattered rather than column by column
+  for (let i = points.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [points[i], points[j]] = [points[j]!, points[i]!];
+  }
+  const channel = () => Math.random() * 255;
+  const [r1, g1, b1, r2, g2, b2] = [channel(), channel(), channel(), channel(), channel(), channel()];
+  const mult = 0.001 + Math.random() * 0.004;
+
+  // The field never clears, so it develops rather than loops: once it has drifted for
+  // long enough the picture stops changing meaningfully and the frames are pure battery.
+  // Reduced motion gets the same picture, arrived at without the drift.
+  const ramp = still ? Math.ceil(POINTS / 60) : 20;
+  const stopAfter = still ? 60 : 2100;
+  let frames = 0,
+    last = 0;
+
+  // requestAnimationFrame doesn't fire in a hidden tab, so nothing decorative burns
+  // frames behind one
+  function draw(t: number) {
+    if (frames >= stopAfter) return;
+    requestAnimationFrame(draw);
+    // p5's 60 fps cap (same 5 ms slack): stopAfter counts frames, and a 120 Hz display
+    // would otherwise develop the field in half the time
+    if (t - last < 1000 / 60 - 5) return;
+    last = t;
+    const max = Math.min(++frames * ramp, points.length);
+    const cx = w / 2,
+      cy = h / 2;
+    for (let i = 0; i < max; i++) {
+      const pt = points[i]!;
+      const ox = pt.x,
+        oy = pt.y;
+      // every point advances — off-screen ones drift in later — but only visible ones get painted
+      const angle = noise(ox * mult, oy * mult) * 4 * Math.PI;
+      pt.x += Math.cos(angle);
+      pt.y += Math.sin(angle);
+      if (Math.hypot(cx - pt.x, cy - pt.y) >= diameter) continue;
+      // colour and alpha sample the pre-move position
+      const fx = ox / w,
+        fy = oy / h;
+      ctx.fillStyle = `rgb(${r1 + fx * (r2 - r1)} ${g1 + fy * (g2 - g1)} ${b1 + fx * (b2 - b1)} / ${1 - Math.hypot(cx - ox, cy - oy) / diameter})`;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, thickness / 2, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+  }
+  requestAnimationFrame(draw);
+
+  addEventListener("resize", () => {
+    // a resize wipes the buffer, so a frozen field has to redevelop
+    resize();
+    if (frames < stopAfter) return;
+    frames = 0;
+    requestAnimationFrame(draw);
+  });
+</script>

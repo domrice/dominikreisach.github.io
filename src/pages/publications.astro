@@ -1,0 +1,151 @@
+---
+import { getCollection } from "astro:content";
+import { Picture } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import CloseLink from "../components/CloseLink.astro";
+import { external } from "../utils/external";
+import { gradCycle, grads } from "../utils/grads";
+import { picture, still } from "../utils/images";
+
+// author highlight: the six-pair blue-pink-yellow sweep, driven by the card's group
+const hl = `group-sweep ${grads[4]}`;
+// Link Cycle Rule, started on pair 3 so a card's first link doesn't repeat the close glyph
+const linkGrad = (i: number) => gradCycle(i + 3);
+
+const mark = { first: "○", super: "△" };
+
+// the legend reads its glyphs from `mark`, so the key and the superscripts
+// beside the author names cannot drift apart
+const legend = [
+  { glyph: mark.first, term: "joint first authorship" },
+  { glyph: mark.super, term: "joint supervision" },
+];
+
+// highlights first, then newest-first by date. A card's actions are its links plus,
+// when there is an entry, the bibtex copy button: one run for separators and the cycle.
+const publications = (await getCollection("publications"))
+  .map((e) => e.data)
+  .toSorted((a, b) => +!!b.highlight - +!!a.highlight || b.date.localeCompare(a.date))
+  .map((p) => ({ ...p, actions: [...(p.links ?? []), ...(p.bibtex ? [{ bibtex: p.bibtex }] : [])] }));
+---
+
+<Base
+  title="publications"
+  description="Publications and conference contributions by Dominik Reisach."
+>
+  <div class="relative min-h-screen w-full">
+    <CloseLink grad={grads[3]} />
+    <main
+      class="grid grid-cols-1 gap-12 mx-auto max-w-6xl pt-20 lg:pt-36 pb-6 px-6 lg:px-12 text-pretty text-sm lg:text-base"
+    >
+      <h1 class="sr-only">publications</h1>
+      {
+        publications.map((p) => (
+          <article class="flex flex-col lg:flex-row outline outline-1 group bg-black/80">
+            {/* the column stretches to the card's height, so above `lg` the 16:9 thumb
+                crops to fill it rather than leaving a black band under a taller text
+                column. Below `lg` the parent height is auto, `h-full` resolves to auto
+                and the thumb keeps its full frame. `contents` lets the <img> be the
+                flex item — <picture> is a box that would swallow the stretch.
+                sizes: 2/5 of the max-w-6xl card (1152 − 2×48 = 1056px) from `lg`, full below. */}
+            <div class="basis-2/5 flex-initial">
+              {/* decorative: the h2 beside it already announces the title */}
+              <Picture
+                {...picture}
+                src={still(p.thumb)}
+                sizes="(min-width: 1152px) 422px, (min-width: 900px) 40vw, calc(100vw - 48px)"
+                alt=""
+                class="w-full h-full object-cover"
+                pictureAttributes={{ class: "contents" }}
+              />
+            </div>
+            <div class="flex flex-col gap-3 m-6 justify-center basis-3/5">
+              <h2 class="text-lg lg:text-xl">{p.title}</h2>
+              <p>
+                {p.authors.map((a, i) => (
+                  <>
+                    {i > 0 && <span>, </span>}
+                    <span class={a.me ? hl : undefined}>{a.name}{a.mark && <sup>{mark[a.mark]}</sup>}</span>
+                  </>
+                ))}
+              </p>
+              {/* cite is the venue's element; not-italic keeps the single-style system */}
+              <p>
+                <cite class="not-italic">{p.venue}</cite>
+              </p>
+              {/* authored per file, never derived from a missing link row: a paper
+                  whose DOI simply isn't pasted in yet must not read as unpublished */}
+              {p.status && (
+                <p class="uppercase tracking-widest text-xs text-white/60">
+                  {p.status}
+                </p>
+              )}
+              {/* gap owns the rhythm, so no whitespace ever lands inside an
+                  underline; the middot is decoration, hidden from the reading order */}
+              {/* copy, not download: a LaTeX user pastes the bibtex entry into their
+                  own .bib; Zotero users already have the DOI link */}
+              {!!p.actions.length && (
+                <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  {p.actions.map((x, i) => (
+                    <>
+                      {i > 0 && <span aria-hidden="true" class="text-white/50">·</span>}
+                      {"bibtex" in x ? (
+                        <button
+                          type="button"
+                          aria-live="polite"
+                          data-bibtex={x.bibtex}
+                          class:list={["link cursor-pointer", linkGrad(i)]}
+                        >bibtex</button>
+                      ) : (
+                        <a class:list={["link", linkGrad(i)]} {...external} href={x.href}>{x.label}</a>
+                      )}
+                    </>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+      {/* a legend, not prose: two terms at label size, so this is the system's
+          one case inversion. uppercase via CSS keeps the source lowercase */}
+      <dl
+        class="flex flex-wrap gap-x-9 gap-y-1 uppercase tracking-widest text-xs text-white/60"
+      >
+        {
+          legend.map((l) => (
+            <div class="flex items-baseline gap-2">
+              <dt>
+                <sup>{l.glyph}</sup>
+              </dt>
+              <dd>{l.term}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </main>
+  </div>
+</Base>
+
+<script>
+  // one delegated listener, attached once per visit: it survives ClientRouter swaps,
+  // so the buttons need no per-page wiring. Only the last copied button reads
+  // "copied".
+  let shown: HTMLElement | undefined;
+  let reset: ReturnType<typeof setTimeout>;
+
+  function restore() {
+    if (shown) shown.textContent = "bibtex";
+  }
+
+  document.addEventListener("click", async (e) => {
+    const button = (e.target as Element).closest<HTMLElement>("[data-bibtex]");
+    if (!button) return;
+    await navigator.clipboard.writeText(button.dataset.bibtex!);
+    restore();
+    clearTimeout(reset);
+    shown = button;
+    button.textContent = "copied";
+    reset = setTimeout(restore, 2000);
+  });
+</script>

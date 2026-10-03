@@ -1,0 +1,17 @@
+---
+// one glyph doing two jobs; the label has to name the destination the glyph can't
+const labels = { "/": "back to home", "/work": "back to selected work" };
+
+type Props = { grad: string; to?: keyof typeof labels };
+const { grad, to = "/" } = Astro.props;
+---
+
+<a
+  href={to}
+  class={`fixed top-6 lg:top-12 right-6 lg:right-12 z-10 group flex min-h-11 min-w-11 items-start justify-end text-4xl lg:text-6xl focus-ring`}
+  aria-label={labels[to]}
+>
+  {/* the glyph is narrower than the 44px target, so the gradient clip lives on
+      the span: it must size to the glyph, not to the hit area */}
+  <span class:list={["group-sweep-l", grad]}>&empty;</span>
+</a>
