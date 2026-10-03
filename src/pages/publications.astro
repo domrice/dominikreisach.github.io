@@ -82,6 +82,9 @@ const publications = (await getCollection("publications"))
               )}
               {/* gap owns the rhythm, so no whitespace ever lands inside an
                   underline; the middot is decoration, hidden from the reading order */}
+              {/* flex items are blockified, so plain `py-2.5` (the home-nav trick) would
+                  grow each row; `-my-2.5` cancels it, as in `SiteFooter`: +20px hit
+                  boxes, unchanged layout */}
               {/* copy, not download: a LaTeX user pastes the bibtex entry into their
                   own .bib; Zotero users already have the DOI link */}
               {!!p.actions.length && (
@@ -94,10 +97,10 @@ const publications = (await getCollection("publications"))
                           type="button"
                           aria-live="polite"
                           data-bibtex={x.bibtex}
-                          class:list={["link cursor-pointer", linkGrad(i)]}
+                          class:list={["link cursor-pointer py-2.5 -my-2.5", linkGrad(i)]}
                         >bibtex</button>
                       ) : (
-                        <a class:list={["link", linkGrad(i)]} {...external} href={x.href}>{x.label}</a>
+                        <a class:list={["link py-2.5 -my-2.5", linkGrad(i)]} {...external} href={x.href}>{x.label}</a>
                       )}
                     </>
                   ))}
@@ -130,7 +133,7 @@ const publications = (await getCollection("publications"))
 <script>
   // one delegated listener, attached once per visit: it survives ClientRouter swaps,
   // so the buttons need no per-page wiring. Only the last copied button reads
-  // "copied".
+  // its result.
   let shown: HTMLElement | undefined;
   let reset: ReturnType<typeof setTimeout>;
 
@@ -141,11 +144,16 @@ const publications = (await getCollection("publications"))
   document.addEventListener("click", async (e) => {
     const button = (e.target as Element).closest<HTMLElement>("[data-bibtex]");
     if (!button) return;
-    await navigator.clipboard.writeText(button.dataset.bibtex!);
+    // the clipboard can be refused (permissions, embedded webviews): say so
+    // rather than leave a button that silently does nothing
+    const label = await navigator.clipboard.writeText(button.dataset.bibtex!).then(
+      () => "copied",
+      () => "copy failed",
+    );
     restore();
     clearTimeout(reset);
     shown = button;
-    button.textContent = "copied";
+    button.textContent = label;
     reset = setTimeout(restore, 2000);
   });
 </script>

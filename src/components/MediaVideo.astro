@@ -60,7 +60,9 @@ const poster = await getImage({ src: still(`${base}_poster`), width: 1280, forma
         v.pause();
       } else {
         visible.add(v);
-        if (!reduced.matches && !userPaused.has(v)) v.play();
+        // a refused play (iOS Low Power Mode) leaves the poster and `controls`,
+        // which is the right fallback, so the rejection is expected, not an error
+        if (!reduced.matches && !userPaused.has(v)) v.play().catch(() => {});
       }
     }
   });

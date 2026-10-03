@@ -5,7 +5,8 @@
   aria-hidden="true"
 >
   {/* transparent over the holder's bg-black, which composites the same as painting on black */}
-  <canvas class="fixed top-0 left-0"></canvas>
+  {/* h-lvh: mobile address-bar toggles leave the large viewport unchanged, so no resize wipe */}
+  <canvas class="fixed top-0 left-0 h-lvh"></canvas>
 </div>
 
 <script>
@@ -48,13 +49,12 @@
   // setting the canvas size wipes the buffer and the transform, so this redoes both
   function resize() {
     w = innerWidth;
-    h = innerHeight;
+    h = canvas.clientHeight;
     // a full-viewport canvas at 3x is ~2.25x the fill rate of 2x for dots this small
     const dpr = Math.min(devicePixelRatio, 2);
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
     ctx.scale(dpr, dpr);
     if (w < 600) {
       diameter = w / 2;
@@ -126,6 +126,8 @@
   requestAnimationFrame(draw);
 
   addEventListener("resize", () => {
+    // the address bar fires resize without changing lvh; skip those
+    if (innerWidth === w && canvas.clientHeight === h) return;
     // a resize wipes the buffer, so a frozen field has to redevelop
     resize();
     if (frames < stopAfter) return;

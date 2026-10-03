@@ -61,7 +61,9 @@ const person = {
   description="Computational engineer and software developer specializing in geometry processing, computer vision, and digital fabrication."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(person)} />
-  <header class="text-4xl md:text-5xl lg:text-6xl">
+  {/* `main`, not `header`: the name and the four destinations are this page's
+      whole content, so the landmark screen readers jump to must hold them */}
+  <main class="text-4xl md:text-5xl lg:text-6xl">
     {/* `min-h-dvh`, not `h-dvh`: the `1fr` row still absorbs all the slack, so a
         normal viewport renders identically — but a short one lets the stack push
         past the fold and scroll instead of clipping the last destination off it */}
@@ -94,5 +96,5 @@ const person = {
         ))
       }
     </nav>
-  </header>
+  </main>
 </Base>
